@@ -40,5 +40,15 @@
     "chalk": "^3.0.0",
     "figures": "^3.2.0",
     "vfile": "^4.0.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Hocdoc/vfile-reporter-position"
+  },
+  "bugs": "https://github.com/Hocdoc/vfile-reporter-position/issues",
+  "keywords": [
+    "unist",
+    "vfile",
+    "vfile-reporter"
+  ]  
 }
