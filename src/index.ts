@@ -55,9 +55,10 @@ const reportMessage = (
   contentLines: string[]
 ): FileResult => {
   const fileInfo = ' ' + formatPathWithPosition(file, message) + ' - ';
-  const source =
-    sourceColor(message.source) +
-    (message.ruleId ? chalk.grey(':') + sourceColor(message.ruleId) : '');
+  const source = message.source ? sourceColor(message.source) : '';
+  const ruleId = message.ruleId ? sourceColor(message.ruleId) : '';
+  const sourceAndRule =
+    source && ruleId ? source + chalk.grey(':') + ruleId : source + ruleId;
   const positionLine = contentLines[message.location.start.line - 1]
     ? '\n\n' + getErrorLine(message, contentLines)
     : '';
@@ -72,7 +73,7 @@ const reportMessage = (
     fileInfo +
     level +
     ' ' +
-    (source ? source + ' ' : '') +
+    (sourceAndRule ? sourceAndRule + ' ' : '') +
     message.message +
     positionLine;
 
@@ -131,7 +132,7 @@ const formatPath = (path: string): string => {
 const formatPathWithPosition = (file: VFile, message: VFileMessage) => {
   let result = file.path ? chalk.cyan(file.path) : '';
   let separator = chalk.grey(':');
-  if (message.location) {
+  if (message.location.start.line && message.location.start.column) {
     if (result.length > 0) result += separator;
     result +=
       chalk.yellow(message.location.start.line) +
