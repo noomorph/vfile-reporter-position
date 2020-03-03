@@ -93,7 +93,7 @@ const getErrorLine = (
   const startColumn = message.location.start.column;
   const text = contentLines[startLineNumber - 1];
   const contentLine = lineNumberColor(startLineNumber) + ' ' + text;
-  const dummyLineNumber = startLineNumber.toString().replace(/\d+/g, ' ');
+  const dummyLineNumber = startLineNumber.toString().replace(/\d/g, ' ');
   const redLineLength =
     startLineNumber === message.location.end.line
       ? message.location.end.column - startColumn
