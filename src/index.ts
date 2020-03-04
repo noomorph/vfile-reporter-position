@@ -13,15 +13,25 @@ interface FileResult {
   warningsCount: number;
 }
 
-export const reporter = (files: VFile[], _options?: object): string => {
+export const reporter = (files: VFile[], options?: object): string =>
+  reporterFileResult(files, options).text;
+
+export const reporterFileResult = (
+  files: VFile[],
+  _options?: object
+): FileResult => {
   const fileResults = files
     .filter(x => x.messages.length > 0)
     .map(x => reportFile(x));
   const summary = mergeResults(fileResults);
 
-  return summary.text.length > 0
-    ? summary.text + '\n\n' + summaryLine(summary)
-    : '';
+  return {
+    ...summary,
+    text:
+      summary.text.length > 0
+        ? summary.text + '\n\n' + summaryLine(summary)
+        : '',
+  };
 };
 
 const summaryLine = (summary: FileResult): string => {
