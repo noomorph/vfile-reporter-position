@@ -13,6 +13,8 @@ interface FileResult {
   warningsCount: number;
 }
 
+export default reporter;
+
 export const reporter = (files: VFile[], options?: object): string =>
   reporterFileResult(files, options).text;
 
