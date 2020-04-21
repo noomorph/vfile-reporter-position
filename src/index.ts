@@ -102,12 +102,13 @@ const getErrorLine = (
 ): string => {
   const prefix = '  ';
   const startLineNumber = message.location.start.line;
+  const endLineNumber = message.location.end.line;
   const startColumn = message.location.start.column;
   const text = contentLines[startLineNumber - 1];
   const contentLine = lineNumberColor(startLineNumber) + ' ' + text;
   const dummyLineNumber = startLineNumber.toString().replace(/\d/g, ' ');
   const redLineLength =
-    startLineNumber === message.location.end.line
+    startLineNumber === endLineNumber
       ? message.location.end.column - startColumn
       : text.length - startColumn;
   const redLine =
