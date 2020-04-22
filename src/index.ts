@@ -114,7 +114,7 @@ const getErrorLine = (
   const redLine =
     lineNumberColor(dummyLineNumber) +
     ' '.repeat(startColumn) +
-    errorColor('~'.repeat(redLineLength));
+    errorColor('~'.repeat(Math.max(redLineLength, 0)));
   return prefix + contentLine + '\n' + prefix + redLine + '\n';
 };
 
