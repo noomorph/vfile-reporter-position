@@ -13,15 +13,10 @@ interface FileResult {
   warningsCount: number;
 }
 
-export default reporter;
-
-export const reporter = (files: VFile[], options?: object): string =>
+const reporter = (files: VFile[], options?: object): string =>
   reporterFileResult(files, options).text;
 
-export const reporterFileResult = (
-  files: VFile[],
-  _options?: object
-): FileResult => {
+const reporterFileResult = (files: VFile[], _options?: object): FileResult => {
   const fileResults = files
     .filter(x => x.messages.length > 0)
     .map(x => reportFile(x));
@@ -163,3 +158,5 @@ const warningColor = chalk.yellow;
 const errorColor = chalk.red;
 const lineNumberColor = (text: any): string => chalk.bgWhite(chalk.black(text));
 const sourceColor = chalk.magenta;
+
+module.exports = reporter;

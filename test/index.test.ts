@@ -1,5 +1,5 @@
 import vfile from 'vfile';
-import { reporter } from '../src';
+const reporter = require('../src');
 
 const file1 = vfile({
   path: 'src/test.md',
