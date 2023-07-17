@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`vfile-reporter-position should report errors and warnings 1`] = `
+"src/test.md
+  ⚠ src/test.md:1:8 - warning spell:typo \`braavo\` is misspelt; did you mean \`bravo\`?
+
+  1 hurrra braavo Jawa!
+
+  ⚠ src/test.md:1:15 - warning spell:warn \`Jawa\` is maybe misspelt; did you mean \`Java\`?
+
+  1 hurrra braavo Jawa!
+
+src/other/dir/test.md
+  ⚠ src/other/dir/test.md:1:7 - warning spell:nonsense \`world! and Hello should be together, right?
+
+  1 Hallo world!
+  2 Hello welt!
+
+
+0 errors and 3 warnings"
+`;

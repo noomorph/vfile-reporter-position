@@ -6,6 +6,8 @@ import type { VFile } from 'vfile';
 import type { VFileMessage } from 'vfile-message';
 import chalk from 'chalk';
 import figures from 'figures';
+import { getErrorLine } from './lineUtils.js';
+import { errorColor, sourceColor, warningColor } from './formatting.js';
 
 interface FileResult {
   text: string;
@@ -56,18 +58,6 @@ const reportFile = (file: VFile): FileResult => {
   };
 };
 
-const getStartLine = (message: VFileMessage): number =>
-  message.position?.start.line ?? 1;
-
-const getStartColumn = (message: VFileMessage): number =>
-  message.position?.start.column ?? 1;
-
-const getEndLine = (message: VFileMessage): number =>
-  message.position?.end.line ?? getStartLine(message);
-
-const getEndColumn = (message: VFileMessage): number =>
-  message.position?.end.column ?? getStartColumn(message);
-
 const reportMessage = (
   file: VFile,
   message: VFileMessage,
@@ -78,9 +68,8 @@ const reportMessage = (
   const ruleId = message.ruleId ? sourceColor(message.ruleId) : '';
   const sourceAndRule =
     source && ruleId ? source + chalk.grey(':') + ruleId : source + ruleId;
-  const positionLine = contentLines[getStartLine(message) - 1]
-    ? '\n\n' + getErrorLine(message, contentLines)
-    : '';
+
+  const positionLine = getErrorLine(message, contentLines);
   const prefixSymbol = message.fatal
     ? errorColor(figures.cross)
     : warningColor(figures.warning);
@@ -101,28 +90,6 @@ const reportMessage = (
     errorsCount: message.fatal ? 1 : 0,
     warningsCount: message.fatal ? 0 : 1,
   };
-};
-
-const getErrorLine = (
-  message: VFileMessage,
-  contentLines: string[]
-): string => {
-  const prefix = '  ';
-  const startLineNumber = getStartLine(message);
-  const endLineNumber = getEndLine(message);
-  const startColumn = getStartColumn(message);
-  const text = contentLines[startLineNumber - 1];
-  const contentLine = lineNumberColor(startLineNumber) + ' ' + text;
-  const dummyLineNumber = startLineNumber.toString().replace(/\d/g, ' ');
-  const redLineLength =
-    startLineNumber === endLineNumber
-      ? getEndColumn(message) - startColumn
-      : text.length - startColumn;
-  const redLine =
-    lineNumberColor(dummyLineNumber) +
-    ' '.repeat(startColumn) +
-    errorColor('~'.repeat(Math.max(redLineLength, 0)));
-  return prefix + contentLine + '\n' + prefix + redLine + '\n';
 };
 
 const mergeResults = (results: FileResult[]): FileResult => {
@@ -166,10 +133,5 @@ const formatPathWithPosition = (file: VFile, message: VFileMessage) => {
 
 const plural = (count: number, text: string): string =>
   count + ' ' + text + (count === 1 ? '' : 's');
-
-const warningColor = chalk.yellow;
-const errorColor = chalk.red;
-const lineNumberColor = (text: any): string => chalk.bgWhite(chalk.black(text));
-const sourceColor = chalk.magenta;
 
 export default reporter;

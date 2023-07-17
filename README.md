@@ -16,7 +16,7 @@ npm install vfile-reporter-position
 
 ## Usage
 
-See `test/index.test.ts` for the example from the screenshot.
+See `src/index.test.ts` for the example from the screenshot.
 
 ## API
 
